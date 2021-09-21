@@ -19,10 +19,19 @@ class UiStatte:ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val color= remember {
+                mutableStateOf(Color.Green)
+            }
             Column(Modifier.fillMaxSize()) {
                 ColorBox(
                     Modifier.fillMaxSize().weight(1f)
-                )
+                ){
+                    color.value=it
+                }
+                Box(modifier = Modifier
+                    .background(color.value)
+                    .weight(1f)
+                    .fillMaxSize())
 
             }
 
@@ -30,18 +39,21 @@ class UiStatte:ComponentActivity() {
     }
 }
 @Composable
-fun ColorBox(modifier: Modifier){
-    val color= remember {
-        mutableStateOf(Color.Green)
-    }
+fun ColorBox(
+    modifier: Modifier,
+    updateColor:(Color)->Unit
+){
+
     Box(modifier = modifier
-        .background(color.value)
+        .background(Color.Red)
         .clickable {
-            color.value = Color(
-                Random.nextFloat(),
-                Random.nextFloat(),
-                Random.nextFloat(),
-                1f
+            updateColor(
+                Color(
+                    Random.nextFloat(),
+                    Random.nextFloat(),
+                    Random.nextFloat(),
+                    1f
+                )
             )
 
         }
